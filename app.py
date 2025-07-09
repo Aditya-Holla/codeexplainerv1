@@ -10,13 +10,16 @@ load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
 
 # Set up OpenAI client
-openai.api_key = api_key
+import openai
+
+client = openai.OpenAI(api_key=api_key)
+
 
 # GPT: Explain code
 def explain_code(code_snippet):
     prompt = f"Explain this Python code in simple terms for a beginner:\n\n{code_snippet}"
     
-    response = openai.chat.completions.create(
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.3,
@@ -30,7 +33,7 @@ def explain_code(code_snippet):
 def suggest_improvement(code_snippet):
     prompt = f"Suggest improvements for this Python code, such as simplifying logic or adding docstrings:\n\n{code_snippet}"
     
-    response = openai.chat.completions.create(
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.3,
