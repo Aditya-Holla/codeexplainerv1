@@ -23,3 +23,30 @@ class LineByLineVisitor(ast.NodeVisitor):
 
     def get_complexity_scores(self):
         return cc_visit(self.code)
+
+
+
+class FunctionAnalyzer(ast.NodeVisitor):
+    def __init__(self, code):
+        self.code = code
+        self.tree = ast.parse(code)
+        self.functions = []
+
+    def visit_FunctionDef(self, node):
+        docstring = ast.get_docstring(node) is not None
+        start = node.lineno
+        end = max([n.lineno for n in ast.walk(node) if hasattr(n, 'lineno')], default=start)
+        self.functions.append({
+            "name": node.name,
+            "start": start,
+            "end": end,
+            "docstring": docstring,
+        })
+        self.generic_visit(node)
+
+    def analyze_complexity(self):
+        scores = cc_visit(self.code)
+        complexity_map = {s.name: s.complexity for s in scores}
+        for fn in self.functions:
+            fn["complexity"] = complexity_map.get(fn["name"], 0)
+        return self.functions
