@@ -40,7 +40,7 @@ st.title("Python Code Explainer")
 uploaded_file = st.file_uploader("Upload a Python (.py) file", type="py")
 
 if uploaded_file is not None:
-    code = uploaded_file.read().deco de("utf-8")
+    code = uploaded_file.read().decode("utf-8")
     st.code(code, language='python')
 
     visitor = LineByLineVisitor(code)
