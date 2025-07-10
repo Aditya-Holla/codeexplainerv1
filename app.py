@@ -120,7 +120,7 @@ if uploaded_file is not None:
     else:
         st.info("No functions found to analyze.")
 
-    # --- LINE-BY-LINE EXPLANATION ---
+    #  Explains code line b line
     class LineByLineVisitor(ast.NodeVisitor):
         def __init__(self, code):
             self.code = code
